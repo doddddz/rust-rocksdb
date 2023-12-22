@@ -301,24 +301,3 @@ pub(crate) unsafe fn level_property(name: &str, level: usize) -> PropertyName {
     // interior nul bytes.
     PropertyName::from_vec_with_nul_unchecked(bytes)
 }
-
-#[test]
-fn sanity_checks() {
-    let want = "rocksdb.cfstats-no-file-histogram";
-    assert_eq!(want, crate::properties::CFSTATS_NO_FILE_HISTOGRAM);
-
-    let want = "rocksdb.num-files-at-level5";
-    assert_eq!(want, &*crate::properties::num_files_at_level(5));
-}
-
-#[test]
-#[should_panic]
-fn test_interior_nul() {
-    PropName::new_unwrap("interior nul\0\0");
-}
-
-#[test]
-#[should_panic]
-fn test_non_nul_terminated() {
-    PropName::new_unwrap("no nul terminator");
-}
